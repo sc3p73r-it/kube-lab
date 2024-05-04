@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-app
+  name: nginx-app
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+        - image: nginx
+          name: nginx
+          resources: {}
+
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: nginx-app
+  namespace: staging
+spec:
+  maxReplicas: 10
+  minReplicas: 5
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-app
+  targetCPUUtilizationPercentage: 70

@@ -1,0 +1,30 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: web01-service
+#   namespace: volumes
+# spec:
+#   selector:
+#     app: web01
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80
+#   type: ClusterIP
+
+# ---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web01-service
+  namespace: volumes
+  labels:
+    app: web01
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: web01

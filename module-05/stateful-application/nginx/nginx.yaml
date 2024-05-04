@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-test
+  name: nginx-test
+  namespace: volumes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-test
+    spec:
+      containers:
+      - image: nginx:stable-alpine
+        name: nginx
+        volumeMounts:
+        - name: nginx-persistent-storage
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nginx-persistent-storage
+        persistentVolumeClaim:
+         claimName: nginx-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: hostpath
+  hostPath:
+    path: /home/ubuntu/kube-lab/module-05/data
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteOnce

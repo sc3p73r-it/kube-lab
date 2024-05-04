@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/apps/v1%40deployment": "file:///home/ubuntu/kube-lab/module-05/stateful%20application/nginx.yaml"
+    }
+}
